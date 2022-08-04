@@ -1,0 +1,5 @@
+package idris2-Pythagoras
+
+depends = contrib
+
+sourcedir = "./"

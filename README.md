@@ -9,10 +9,8 @@ This version tries to exploit the the Agda standard library.
 
 ## Links
 
-* Agda  
-  <http://wiki.portal.chalmers.se/agda/pmwiki.php>
-* Agda standard library  
-  <http://wiki.portal.chalmers.se/agda/agda.php?n=Libraries.StandardLibrary>
+* Idris: A Language for Type-Driven Development  
+  <https://www.idris-lang.org/>
 * The original proof on Agda1/Alfa  
   <http://www.cs.ru.nl/~freek/comparison/files/agda.alfa>
 * The paper  
@@ -20,27 +18,27 @@ This version tries to exploit the the Agda standard library.
 * Other proofs by another different proof assistants  
   <http://www.cs.ru.nl/~freek/comparison/>
 
-## Files
+## Files in `Coquand`
 
-* `Cancellative.agda`  
+* `Cancellative.idr`  
   The definition of cancellative abelian monoid.
 
-* `Theorem.agda`  
+* `Theorem.idr`  
   The main theorem which is originally proved by Thierry Coquand:
   any prime cannot be a square of rational in cancellative
   abelian monoid.
 
 ---
 
-* `2Divides`  
+* `2Divides.idr`  
   Some properties of natural numbers (with zero).
 
-* `NatPlus.agda`  
+* `NatPlus.idr`  
   A set of natural numbers without zero.
 
 ---
 
-* `Corollary.agda`  
+* `Corollary.idr`  
   The set of the natural numbers without zero and  multiplication
   forms a cancellative abelian monoid.  
   Thus, the square root of two is irrational.
@@ -49,7 +47,7 @@ This version tries to exploit the the Agda standard library.
 
 ## Miscellanea
 
-* `Corbineau.Sqrt2`
+* `Corbineau/Sqrt2.idr`
 
   There is no m and n such that
 
@@ -62,7 +60,7 @@ This version tries to exploit the the Agda standard library.
 
 ---
 
-* `Danielsson.2IsPrime`
+* `Danielsson/TwoIsPrime.idr`
 
   2 is prime.
 

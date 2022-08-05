@@ -45,9 +45,9 @@ This version tries to exploit the the Agda standard library.
 
 ---
 
-## Miscellanea
+## Files in `Corbineau`
 
-* `Corbineau/Sqrt2.idr`
+* `Sqrt2.idr`
 
   There is no m and n such that
 
@@ -57,14 +57,5 @@ This version tries to exploit the the Agda standard library.
 
   The proof in Coq has been originally written by Pierre Corbineau  
   <http://www-verimag.imag.fr/~corbinea/ftp/programs/sqrt2.v>
-
----
-
-* `Danielsson/TwoIsPrime.idr`
-
-  2 is prime.
-
-  Originally written by Nils Anders Danielsson  
-  <https://lists.chalmers.se/pipermail/agda/2011/003464.html>
 
 ---

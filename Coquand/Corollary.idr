@@ -44,17 +44,16 @@ prime_Nz2 (x ## p) (y ## q) h
 -- Well-founded (Multiple Nz2)
 
 lt_m2 : (x : Nat) -> NonZero x -> x `LT` 2 * x
-lt_m2 (S x) SIsNonZero =
-  the (2 + x `LTE` 2 * (1 + x)) $
-    rewrite multDistributesOverPlusRight 2 1 x in
-  the (2 + x `LTE` 2 + 2 * x) $
-    (LTESucc . LTESucc) $
-  the (x `LTE` 2 * x) $
-    id $
-  the (x `LTE` x + (x + 0)) $
-    rewrite plusZeroRightNeutral x in
-  the (x `LTE` x + x) $
-    lteAddRight x
+lt_m2 (S x) SIsNonZero = lteAddRight x |>
+  |~~ (x `LTE` x + x)
+  ~~> (x `LTE` x + (x + 0))
+    ... (\h => rewrite plusZeroRightNeutral x in h)
+  ~~> (x `LTE` 2 * x)
+    ... id
+  ~~> (2 + x `LTE` 2 + 2 * x)
+    ... (LTESucc . LTESucc)
+  ~~> (2 + x `LTE` 2 * (1 + x))
+    ... (\h => rewrite multDistributesOverPlusRight 2 1 x in h)
 
 LTP : (m, n : NatP) -> Type
 m `LTP` n = fromNatP m `LT` fromNatP n

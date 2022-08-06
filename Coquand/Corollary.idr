@@ -23,11 +23,11 @@ implementation CAMonoid NatP where
 
 -- Prime Nz2
 
-divides_d2 : (n : NatP) -> Nz2 `divides` n -> d2 (fromNatP n)
+divides_d2 : (n : NatP) -> Nz2 `divides` n -> d2 (fP n)
 divides_d2 (x ## p) ((y ## q) ** h) =
-  (y ** cong fromNatP h)
+  (y ** cong fP h)
 
-d2_divides : (n : NatP) -> d2 (fromNatP n) -> Nz2 `divides` n
+d2_divides : (n : NatP) -> d2 (fP n) -> Nz2 `divides` n
 d2_divides (0 ## nz_Z) (y ** h) = absurd nz_Z
 d2_divides (S x ## p) (0 ** z__s) = absurd z__s
 d2_divides (S x ## SIsNonZero) (S y ** h) =
@@ -57,19 +57,19 @@ lt_m2 (S x) SIsNonZero = lteAddRight x |>
     ... (\h => rewrite multDistributesOverPlusRight 2 1 x in h)
 
 LTP : (m, n : NatP) -> Type
-m `LTP` n = fromNatP m `LT` fromNatP n
+m `LTP` n = fP m `LT` fP n
 
 nz2eq_LTP : (m, n : NatP) -> Multiple Nz2 m n -> m `LTP` n
 nz2eq_LTP (x ## p) (y ## q) eq_2m_n =
-  rewrite sym $ (cong fromNatP eq_2m_n) in
+  rewrite sym $ (cong fP eq_2m_n) in
   lt_m2 x p
 
-nz2eq_LT : (m, n : NatP) -> Multiple Nz2 m n -> fromNatP m `LT` fromNatP n
+nz2eq_LT : (m, n : NatP) -> Multiple Nz2 m n -> fP m `LT` fP n
 
 -- Well-founded
 
 RelMorphNatPNat : RelMorph NatP Nat (Multiple Nz2) LT
-RelMorphNatPNat = MkRelMorph fromNatP nz2eq_LT
+RelMorphNatPNat = MkRelMorph fP nz2eq_LT
 
 WellFounded NatP (Multiple Nz2) where
   wellFounded = relMorph_Wfb_acc RelMorphNatPNat

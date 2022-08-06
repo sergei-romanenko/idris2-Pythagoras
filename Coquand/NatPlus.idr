@@ -13,8 +13,8 @@ data NatP : Type where
   (##) : (x : Nat) -> (p : NonZero x) -> NatP
 
 public export
-fromNatP : NatP -> Nat
-fromNatP (x ## p) = x
+fP : NatP -> Nat
+fP (x ## p) = x
 
 predP : NatP -> Nat
 predP (0 ## SIsNonZero) impossible
@@ -48,36 +48,35 @@ public export
 eq_eqp : (m, n : _) -> m = n -> m =# n
 eq_eqp (x ## p) (x ## p) Refl = Refl
 
-nz_plus : (x : _) -> NonZero x -> (y : _) -> NonZero (x + y)
-nz_plus (S x) SIsNonZero y = SIsNonZero
+nz_plus : (m, n : NatP) -> NonZero (fP m + fP n)
+nz_plus (S x ## SIsNonZero) (S y ## SIsNonZero) = SIsNonZero
 
 public export
-nz_mult : (x : _) -> NonZero x -> (y : _) -> NonZero y -> NonZero (x * y)
-nz_mult (S x) SIsNonZero (S y) SIsNonZero = SIsNonZero
+nz_mult : (m, n : NatP) -> NonZero (fP m * fP n)
+nz_mult (S x ## SIsNonZero) (S y ## SIsNonZero) = SIsNonZero {x = y + x * S y}
+
 
 infixl 8 +#
 infixl 9 *#
 
 (+#) : (m, n : NatP) -> NatP
-(x ## p) +# (y ## q) = (x + y) ## nz_plus x p y
+m +# n = (fP m + fP n) ## nz_plus m n
 
 public export
 (*#) : (m, n : NatP) -> NatP
-(x ## p) *# (y ## q) = (x * y) ## nz_mult x p y q
+m *# n = (fP m * fP n) ## nz_mult m n
 
 export
 plusp_assoc : (l, c, r : NatP) -> l +# (c +# r) = (l +# c) +# r
-plusp_assoc (x ## p) (y ## q) (z ## r) =
-  eqp_eq ((x ## p) +# ((y ## q) +# (z ## r)))
-         (((x ## p) +# (y ## q)) +# (z ## r)) $
-    plusAssociative x y z
+plusp_assoc l c r =
+  eqp_eq (l +# (c +# r)) ((l +# c) +# r) $
+    plusAssociative (fP l) (fP c) (fP r)
 
 export
 multp_assoc : (l, c, r : NatP) -> l *# (c *# r) = (l *# c) *# r
-multp_assoc (x ## p) (y ## q) (z ## r) =
-  eqp_eq ((x ## p) *# ((y ## q) *# (z ## r)))
-         (((x ## p) *# (y ## q)) *# (z ## r)) $
-    multAssociative x y z
+multp_assoc l c r =
+  eqp_eq (l *# (c *# r)) ((l *# c) *# r) $
+    multAssociative (fP l) (fP c) (fP r)
 
 export
 multp_leftIdentity : (n : NatP) -> Nz1 *# n = n
@@ -86,8 +85,8 @@ multp_leftIdentity (x ## p) =
 
 export
 multp_comm : (m, n : NatP) -> m *# n =  n *# m
-multp_comm (x ## p) (y ## q) =
-  eqp_eq ((x ## p) *# (y ## q)) ((y ## q) *# (x ## p)) $ multCommutative x y
+multp_comm m n =
+  eqp_eq (m *# n) (n *# m) $ multCommutative (fP m) (fP n)
 
 mult_cancel_right : (x, y, k : Nat) -> x * S k = y * S k -> x = y
 mult_cancel_right Z Z k Refl = Refl

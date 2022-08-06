@@ -41,7 +41,8 @@ prime_Nz2 (x ## p) (y ## q) h
   _ | d2_xy = bimap (d2_divides (x ## p)) (d2_divides (y ## q))
         $ d2mn_d2m'd2n x y d2_xy
 
--- Well-founded (Multiple Nz2)
+
+-- RelMorph NatP & Nat
 
 lt_m2 : (x : Nat) -> NonZero x -> x `LT` 2 * x
 lt_m2 (S x) SIsNonZero = lteAddRight x |>
@@ -58,28 +59,24 @@ lt_m2 (S x) SIsNonZero = lteAddRight x |>
 LTP : (m, n : NatP) -> Type
 m `LTP` n = fromNatP m `LT` fromNatP n
 
-
-nz2eq_LTP : (m, n : NatP) -> Nz2 *# m = n -> m `LTP` n
+nz2eq_LTP : (m, n : NatP) -> Multiple Nz2 m n -> m `LTP` n
 nz2eq_LTP (x ## p) (y ## q) eq_2m_n =
   rewrite sym $ (cong fromNatP eq_2m_n) in
   lt_m2 x p
 
+nz2eq_LT : (m, n : NatP) -> Multiple Nz2 m n -> fromNatP m `LT` fromNatP n
+
 -- Well-founded
 
-Sized NatP where
-  size = fromNatP
+RelMorphNatPNat : RelMorph NatP Nat (Multiple Nz2) LT
+RelMorphNatPNat = MkRelMorph fromNatP nz2eq_LT
 
 WellFounded NatP (Multiple Nz2) where
-  wellFounded m = Access $ acc m (sizeAccessible (fromNatP m))
-    where
-    acc : (m : NatP) -> (Accessible LT (fromNatP m)) -> (n : NatP) -> Multiple Nz2 n m ->
-      Accessible (Multiple Nz2) n
-    acc ((2 * _) ## (nz_mult 2 SIsNonZero _ _)) (Access rec) (y ## q) Refl =
-      Access $ \(z ## r), lt => acc (y ## q) (rec y (lt_m2 y q)) (z ## r) lt
+  wellFounded = relMorph_Wfb_acc RelMorphNatPNat
 
 --
 -- Nz2 is not rational.
 --
 
 corollary : NotSquare Nz2
-corollary x y h = theorem Nz2 prime_Nz2 x y h
+corollary = theorem Nz2 prime_Nz2
